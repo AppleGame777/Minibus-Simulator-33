@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Симулятор маршрутки 33</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js"></script>
+</head>
+<body>
+    <p class="disclaimer">Игра содержит громкие звуки, советуем убавить громкость.</p>
+    <p class="disclaimer1">Эта игра может содержать сцены которые будут не приятными некоторым лицам.</p>
+    <p class="disclaimer2">Мы не хотим оскорблять какие-либо лица.</p>
+    </p>
+
+    <!-- Экран загрузки -->
+    <div id="pagePreloader" style="position: fixed; inset: 0; background-color: #2c3e50; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-family: Arial, sans-serif; transition: opacity 0.4s ease, visibility 0.4s ease;">
+        <svg viewBox="0 0 100 100" style="width: 75px; height: 75px; animation: spin-loader 1s linear infinite;">
+            <path d="M 81 67 A 36 36 0 1 1 80 31" fill="none" stroke="white" stroke-width="13" stroke-linecap="round"/>
+            <polygon points="88,16 88,43 61,43" fill="white" stroke="white" stroke-width="3" stroke-linejoin="round"/>
+        </svg>
+        <div style="margin-top: 18px; font-size: 18px; font-weight: bold; letter-spacing: 1px;">Загрузка...</div>
+    </div>
+    <style>
+        @keyframes spin-loader {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <div class="game-container">
+        <h1 id="gameTitle">Симулятор маршрутки 33</h1>
+        <div class="bus-container">
+            <div class="bus" id="bus">🚌</div>
+            <div class="bus-two" id="bus2">
+                <div class="driver-shout" id="driverShout">ЭЛЬ ДРИФТО!</div>
+                <div style="font-size: 80px; line-height: 1;">🚐</div>
+            </div>
+            <div class="smoke" id="smoke"></div>
+        </div>
+
+        <div class="rage-container">
+            <div class="rage-label" id="barLabel">Ярость водителя</div>
+            <div class="rage-bar-outer">
+                <div class="rage-bar-inner" id="rageBar"></div>
+            </div>
+        </div>
+
+        <button class="shout-btn" id="shoutBtn">Крикнуть «Я тебя могну»</button>
+        <div class="result-text" id="result"></div>
+    </div>
+    <div class="verity-scene" id="verityScene">
+        <div class="verity-char" id="verityChar">
+            <div class="verity-speech" id="veritySpeech">Hello! Im Verity</div>
+            <div class="verity-emoji">😉</div>
+        </div>
+        <div class="verity-box" id="verityBox">📦</div>
+        <div class="verity-bus" id="verityBus">🚌</div>
+    </div>
+    <div class="corner-bomb" id="cornerBomb">💣</div>
+    <div class="supernova-core" id="supernovaCore"></div>
+    <div class="supernova-wave" id="supernovaWave"></div>
+    <div class="flash-overlay" id="flashOverlay"></div>
+    <div class="nuke-message" id="nukeMessage">💥 САЙТ УНИЧТОЖЕН 💥</div>
+    <div class="supernova-text" id="supernovaText">💥 СУПЕРНОВА ВЗОРВАЛАСЬ 💥</div>
+    <div id="fallingCalendar" class="falling-calendar" title="Нажми на календарь!">📅</div>
+<div id="memeOverlay" class="meme-overlay">
+    <div class="meme-box">
+        <button id="closeMemeBtn" class="close-meme-btn">✖</button>
+        <img id="memeImage" src="./Resources/friday13th.png" alt="Пятница 13" />
+    </div>
+</div>
+<div id="cornerPotato" class="corner-potato" title="Подозрительная картошка">🥔</div>
+
+<audio id="memeAudio" src="Resources/friday13th.mp3" preload="auto"></audio>           <!-- Звук Пятница 13-->
+<audio id="soundShout" src="Resources/shout.mp3" preload="auto"></audio>               <!-- Клик по кнопке "Крикнуть" -->
+<audio id="soundBusClick" src="Resources/bus_click.mp3" preload="auto"></audio>        <!-- Клик по автобусу -->
+<audio id="soundDoshirak" src="Resources/doshirak.mp3" preload="auto"></audio>         <!-- Превращение в Доширак -->
+<audio id="soundEat" src="Resources/eat.mp3" preload="auto"></audio>                   <!-- Поедание Доширака -->
+<audio id="soundRam" src="Resources/ram.mp3" preload="auto"></audio>                   <!-- Наезд / таран второго автобуса -->
+<audio id="soundBusExplode" src="Resources/bus_explode.mp3" preload="auto"></audio>    <!-- Взрыв автобуса -->
+<audio id="soundBusLeave" src="Resources/bus_leave.mp3" preload="auto"></audio>        <!-- Автобус уезжает через 30 сек -->
+<audio id="soundVerity" src="Resources/verity.mp3" preload="auto"></audio>             <!-- Появление Верити из коробки -->
+<audio id="soundCalendar" src="Resources/calendar.mp3" preload="auto"></audio>         <!-- Выпадение календаря -->
+<audio id="soundBombExplode" src="Resources/bomb_explode.mp3" preload="auto"></audio>  <!-- Обычный взрыв бомбы / картошки -->
+<audio id="soundSupernova" src="Resources/supernova.mp3" preload="auto"></audio>       <!-- Взрыв суперновы -->
+<audio id="potatoAudio" src="Resources/potato.mp3" preload="auto"></audio>             <!-- Фраза картошки -->
+<audio id="soundPotatoExplode" src="Resources/potato_boom.mp3" preload="auto"></audio>   <!-- Взрыв картошки-->
+<audio id="soundAchievement" src="Resources/achievement.mp3" preload="auto"></audio>
+
+<button id="achOpenBtn" class="ach-open-btn" title="Достижения">
+  <img src="Resources/achievement.png" alt="Кубок">
+  <span id="achCounter">0/9</span>
+</button>
+
+<div id="achToast" class="ach-toast">
+  <img src="Resources/achievement.png" alt="Достижение">
+  <div class="ach-toast-info">
+    <div class="ach-toast-label">ДОСТИЖЕНИЕ ПОЛУЧЕНО!</div>
+    <div id="achToastTitle" class="ach-toast-title">Название</div>
+    <div id="achToastDesc" class="ach-toast-desc">Описание</div>
+  </div>
+</div>
+
+<div id="achModal" class="ach-modal">
+  <div class="ach-modal-box">
+    <div class="ach-modal-header">
+      <h2>🏆 Достижения</h2>
+      <div class="ach-header-actions">
+        <button id="achResetBtn" class="ach-reset-btn" title="Сбросить прогресс">Сбросить</button>
+        <button id="achCloseBtn" class="ach-close-btn">✖</button>
+      </div>
+    </div>
+    <div id="achList" class="ach-list"></div>
+  </div>
+</div>
